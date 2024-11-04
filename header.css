@@ -23,7 +23,7 @@
     cursor: pointer;
     align-items: center;
     font-size: 30px;
-    font-family: "Oxanium", sans-serif;
+    font-family: "Hurricane", sans-serif;
     font-weight: 800;
 }
 .right-section{
@@ -44,6 +44,7 @@
 
 .header-button:hover{
     border-bottom: 3px solid blue;
-    font-size: 22px;
+    /* font-size: 22px; */
+    transform: scale(1.05);
     transition: all 0.1s;
 }

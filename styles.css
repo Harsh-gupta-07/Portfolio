@@ -75,6 +75,8 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .resume-button{
+    /* display: flex; */
+    min-width: 130px;
     padding: 15px 25px;
     font-family: "Karla";
     font-weight: 700;
@@ -87,12 +89,25 @@ h1, h2, h3, h4, h5, h6{
     margin-right: 8px;
 }
 
+.arrow{
+    margin-right: 5px;
+}
+
 .resume-button:hover{
     box-shadow: 2px 2px 5px rgba(63, 0, 255, 0.6);
 }
 
+.special-resume-button{
+    background-color: #00c7b7;
+}
+.special-resume-button:hover{
+    box-shadow: none;
+    transform: scale(1.04);
+}
+
 .resume-button:hover .arrow{
     margin-left: 5px;
+    margin-right: 0;
 }
 
 .resume-button:active{
@@ -330,17 +345,17 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .contact{
-    padding: 50px 100px;
+    padding: 50px 200px;
     background-image: linear-gradient(to right top, #4e37c3, #6c3fc7, #b05ed4);
     color: white;
     display: flex;
 }
 
-.contact-img{
+.contact-main{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
 }
+
 .contact-reachout-header{
     padding: 8px 0;
     font-family: "Karla",sans-serif;
@@ -371,8 +386,7 @@ h1, h2, h3, h4, h5, h6{
 
 .contact-buttons{
     cursor: pointer;
-    margin: 0;
-    background-color: wheat;
+    margin: 15px 8px;
     border: none;
     border-radius: 50%;
     width: 48px;
@@ -380,11 +394,71 @@ h1, h2, h3, h4, h5, h6{
     padding: 0;
 }
 
+.contact-buttons:hover{
+    transform: scale(1.1);
+}
+
 .contact-img{
     height: 100%;
     width: 100%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .contact-email-img{
+    margin-top: 10px;
     width: 400px;
 }
+
+.contact-buttons-div{
+    display: flex;
+    align-items: center;
+}
+
+.copyright{
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    background-color: #1e1e24;
+}
+
+.copyright-para{
+    color: white;
+    font-family: "Oxanium",sans-serif;
+    font-weight: 700;
+}
+
+.copyright-a{
+    font-family: "Tektur","Oxanium",sans-serif;
+    color: #ffdd00;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* .experience{
+    position: relative;
+}
+
+.exp-abs{
+    visibility: hidden;
+    position: absolute;
+    background-color: #1e1e24;
+}
+
+.experience:hover .exp-abs{
+    visibility: visible;
+    background-color: ;
+} */
+
+
+
