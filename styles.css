@@ -9,7 +9,6 @@ html{
 
 body{
     margin: 0;
-    /* height: 10000px; */
 }
 
 a{
@@ -42,6 +41,10 @@ h1, h2, h3, h4, h5, h6{
     background: linear-gradient(to right top, #4e37c3, #8548cb, #9c53d0);
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
+    animation: mymove 2s linear infinite;
+    animation-play-state: paused;
+    animation-delay: calc(var(--scroll) * -1s);
+    /* position: relative; */
 }
 
 .main{
@@ -435,30 +438,10 @@ h1, h2, h3, h4, h5, h6{
     color: #ffdd00;
 }
 
-
-
-
-
-
-
-
-
-
-
-/* .experience{
-    position: relative;
+@keyframes mymove{
+    0% {top: 0px}
+    50% {top: 100px;}
+    100% {top: 150px;}
 }
-
-.exp-abs{
-    visibility: hidden;
-    position: absolute;
-    background-color: #1e1e24;
-}
-
-.experience:hover .exp-abs{
-    visibility: visible;
-    background-color: ;
-} */
-
 
 
