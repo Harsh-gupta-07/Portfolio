@@ -1,0 +1,59 @@
+## The idea
+
+Most LLM benchmarks ask a model one question and grade one answer. Real
+dispatch work is a stream: calls arrive while units are already out, some
+callers are reporting the same crash, and sending the nearest ambulance now
+can leave a worse emergency uncovered a minute later. Smart Emergency turns
+that into a reinforcement-learning environment.
+
+## The environment
+
+Built on [OpenEnv](https://github.com/meta-pytorch/OpenEnv), it is served over
+HTTP and WebSocket so it plugs straight into TRL + Unsloth training loops.
+
+- **City** — a procedurally generated graph of hospitals, stations and
+  landmarks, with travel times solved by Dijkstra.
+- **Calls** — a generator with 25 transcript templates; about **30% are
+  duplicates** of an event already in progress.
+- **Episode** — 20 steps. Each observation is a text prompt: the incoming
+  call, active events, every unit's status and a city reference.
+- **Action** — `dispatch` or `duplicate`, with a severity prediction (1–5),
+  vehicle type and unit, and an optional **reroute** that pulls an in-flight
+  unit off a lower-priority event.
+
+```text
+=== INCOMING CALL [CALL-0003] ===
+Bad crash on Oak Avenue! Car flipped near Riverside Market. Driver trapped, not responding!
+
+=== UNIT STATUS ===
+police_0     | police    | Central Police Station     | FREE
+ambulance_1  | ambulance | Riverside General Hospital | DISPATCHED → EVT-0001
+```
+
+## Reward design
+
+The reward is split into five independent components so the model gets a
+precise signal about *what* it got wrong:
+
+| Component | Range | Measures |
+|---|---|---|
+| `severity` | −0.5 … +1.0 | How close the severity guess was |
+| `duplicate` | −1.0 … +1.5 | Detecting repeat calls and naming the right event |
+| `vehicle_type` | −1.5 … +1.5 | Police vs. ambulance vs. fire |
+| `vehicle_choice` | −2.0 … +1.0 | Availability, type match and proximity |
+| `reroute` | −1.0 … +1.7 | Whether pulling a unit was worth it |
+
+A malformed action costs a flat −2.0, which teaches the model to stay inside
+the schema. A `/grader` endpoint scores whole episodes and a keyword-heuristic
+`/baseline` agent gives a reference score per difficulty level.
+
+## Training
+
+Qwen2.5-1.7B was fine-tuned with **supervised fine-tuning (SFT)** and then
+**GRPO** against the environment's reward, using Unsloth, and deployed on
+Hugging Face Spaces alongside the environment.
+
+## Outcome
+
+The project reached the **finals of the Meta × PyTorch × OpenEnv Hackathon**,
+out of hundreds of teams.

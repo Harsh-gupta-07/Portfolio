@@ -1,0 +1,57 @@
+## The problem
+
+Web servers are bad at slow work. Calling a third-party webhook, waiting on a
+timeout or writing logs inside a request handler makes every user wait for it.
+The usual fix is a background queue — but a queue that lives only in memory
+loses jobs on a crash, and one that lives only in a database is slow to poll.
+
+## The design
+
+goQueue splits the job in two:
+
+- **Redis is the fast path.** Jobs are pushed onto one of three lists —
+  `High`, `Normal`, `Low` — so critical work runs first instead of waiting
+  behind a backlog.
+- **PostgreSQL is the source of truth.** Every job, its status transitions,
+  retry count, logs and result are stored durably through `pgxpool`, so the
+  system can be inspected — and recovered — at any time.
+
+A dedicated **scheduler loop** polls for jobs whose `run_at` has arrived and
+promotes them into the right Redis lane. **N independent worker goroutines**
+pick jobs up, run the matching handler and record the outcome; failures are
+retried until the job's own `max_retries` is reached.
+
+## API
+
+A small REST surface (Gorilla Mux) covers the whole lifecycle:
+
+| Method | Path | What it does |
+|---|---|---|
+| `POST` | `/jobs` | Enqueue a job now |
+| `POST` | `/jobs/schedule` | Schedule a job for `run_at` |
+| `GET` | `/jobs` | Latest jobs, filterable by `status` |
+| `GET` | `/jobs/{id}` | Full status & metadata |
+| `DELETE` | `/jobs/{id}` | Cancel a scheduled job |
+| `GET` | `/jobs/{id}/logs` | Info / warn / error log lines |
+| `GET` | `/jobs/{id}/result` | Handler result, e.g. the HTTP response |
+
+```json
+POST /jobs
+{
+  "priority": "High",
+  "handler": "HttpRequest",
+  "handoff": { "url": "https://example.com/webhook" },
+  "max_retries": 3
+}
+```
+
+Handlers (`Timeout`, `HttpRequest`, `LogToFile`) are plain Go functions mapped
+by name, so adding a new kind of job is one function and one line of wiring.
+
+## Running it
+
+The server traps `SIGINT` / `SIGTERM` and shuts down gracefully, closing the
+HTTP server and database connections cleanly.
+Redis runs in Docker via `make docker-create`, migrations via
+`make run-migrate`, and `make run` starts the API, workers and scheduler
+together.

@@ -1,0 +1,34 @@
+## The goal
+
+A store that feels like a real one: fast browsing across a large catalogue,
+accounts that keep a cart, and a back office for the people running it.
+
+## Architecture
+
+Three tiers, each deployed where it fits best:
+
+- **Storefront** — Next.js with Tailwind CSS, on Vercel.
+- **API** — Node.js + Express, on Render.
+- **Data** — PostgreSQL through Prisma, hosted on Neon.
+
+## Features
+
+- **Auth & roles.** JWT sign-up, login and logout. *Users* browse, keep a cart
+  and place orders; *admins* manage products, orders and accounts, behind
+  role-protected routes.
+- **Search that scales.** Keyword search, category filters and a price range
+  slider over 100,000+ products, with results loaded progressively as you
+  scroll instead of all at once.
+- **Full CRUD.** Products, users and orders — admins can update order status
+  from the dashboard.
+
+## API
+
+| Endpoint | Method | Access |
+|---|---|---|
+| `/api/auth/signup`, `/login`, `/logout` | `POST` | Public / authenticated |
+| `/api/products` | `GET` · `POST` | Public · admin |
+| `/api/products/:id` | `GET` · `PUT` · `DELETE` | Public · admin |
+| `/api/orders` | `POST` · `GET` | Authenticated · admin |
+| `/api/orders/:id` | `GET` | Authenticated |
+| `/api/users/:id` | `GET` | Authenticated |

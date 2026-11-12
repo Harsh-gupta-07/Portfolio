@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* Design tokens — see DESIGN.md. Components use the Tailwind names, never raw values. */
+:root {
+  --paper: #f2eee5;
+  --paper-raised: #faf8f3;
+  --paper-sunk: #e9e4d8;
+  --ink: #16140f;
+  --muted: #57524a;
+  --faint: #7d776b;
+  --signal: #ff4d12;
+  --signal-ink: #b5370a;
+  --ok: #2f7d4f;
+  --warn: #a86a00;
+  --rule: rgb(22 20 15 / 0.14);
+  --rule-strong: rgb(22 20 15 / 0.28);
+  --gutter: clamp(16px, 4vw, 48px);
+  --section-y: clamp(96px, 14vw, 176px);
+  --header-h: 64px;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-paper-sunk: var(--paper-sunk);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-display: var(--font-bricolage), var(--font-geist), sans-serif;
+
+  --text-label: 12px;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.08em;
+  --text-sm: 14px;
+  --text-sm--line-height: 1.5;
+  --text-base: 17px;
+  --text-base--line-height: 1.65;
+  --text-lg: 20px;
+  --text-lg--line-height: 1.5;
+  --text-h3: 28px;
+  --text-h3--line-height: 1.15;
+  --text-h2: clamp(40px, 5.5vw, 72px);
+  --text-h2--line-height: 1;
+  --text-h2--letter-spacing: -0.03em;
+  --text-h1: clamp(44px, min(11vw, 17svh), 168px);
+  --text-h1--line-height: 0.88;
+  --text-h1--letter-spacing: -0.045em;
+  --text-statement: clamp(28px, 3.6vw, 52px);
+  --text-statement--line-height: 1.12;
+  --text-statement--letter-spacing: -0.02em;
+
+  --radius-chip: 4px;
+  --shadow-print: 4px 4px 0 var(--ink);
+
+  --ease-out-3: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    scroll-padding-top: var(--header-h);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--paper);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.65;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--signal);
+    color: var(--ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer components {
+  .shell {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .section {
+    padding-block: var(--section-y);
+  }
+  .label {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  /* Graph-paper texture: 24px minor / 120px major. Hero and figure frames only. */
+  .graph-paper {
+    background-image:
+      linear-gradient(rgb(22 20 15 / 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(22 20 15 / 0.1) 1px, transparent 1px),
+      linear-gradient(rgb(22 20 15 / 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(22 20 15 / 0.05) 1px, transparent 1px);
+    background-size:
+      120px 120px,
+      120px 120px,
+      24px 24px,
+      24px 24px;
+  }
+  .link {
+    text-decoration-line: underline;
+    text-decoration-color: var(--rule-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition:
+      text-decoration-color 0.2s,
+      text-decoration-thickness 0.2s;
+  }
+  .link:hover {
+    text-decoration-color: var(--signal);
+    text-decoration-thickness: 2px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 44px;
+    padding-inline: 18px;
+    border-radius: var(--radius-chip);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s,
+      color 0.2s,
+      box-shadow 0.2s,
+      transform 0.2s var(--ease-out-3);
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn-primary:hover {
+    background: var(--signal);
+    color: var(--ink);
+    box-shadow: var(--shadow-print);
+    transform: translate(-2px, -2px);
+  }
+  .btn-secondary {
+    border: 1px solid var(--ink);
+    color: var(--ink);
+  }
+  .btn-secondary:hover {
+    background: var(--paper-sunk);
+  }
+  .live-dot {
+    position: relative;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--signal);
+  }
+  .live-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: ping 1.8s var(--ease-out-3) infinite;
+  }
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* Pre-animation states. Only applied when JS is running (html.js, set in <head>)
+   and motion is allowed, so content is never stuck invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(28px);
+  }
+  html.js [data-split] {
+    visibility: hidden;
+  }
+}
+
+/* Card → project page morph (React <ViewTransition share="morph">) */
+::view-transition-group(.morph) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,7 @@
+hf for hackathon = https://huggingface.co/spaces/Harsh-Gupta-07/smart_emergency/tree/main
+auramarket github = https://github.com/Harsh-gupta-07/auramarket
+demo = https://auramarket.vercel.app/
+budget-tracker github = https://github.com/Harsh-gupta-07/Budget-Tracker
+demo(broken stuck at login) = https://budget-tracker-three-ruddy.vercel.app/login
+goqueue github = https://github.com/Harsh-gupta-07/goQueue
+demo = none backend app
