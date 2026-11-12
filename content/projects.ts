@@ -32,13 +32,59 @@ export type Project = {
   metrics?: { value: string; label: string }[];
   /** Built-in illustration used instead of a cover image. */
   diagram?: "goqueue" | "wchr";
-  cover?: { src: string; alt: string; width: number; height: number };
+  /**
+   * `fit: "contain"` shows the whole image at its natural size on a dark
+   * backdrop instead of cropping it; use it for small or tall screenshots.
+   */
+  cover?: { src: string; alt: string; width: number; height: number; fit?: "cover" | "contain" };
   gallery?: { src: string; alt: string; width: number; height: number; caption?: string }[];
   /** For "Projects I use myself": how it fits into daily life. */
   usage?: string;
 };
 
 export const projects: Project[] = [
+  {
+    slug: "macmonitor",
+    title: "MacMonitor",
+    summary: "A native macOS menu bar monitor: CPU, RAM and live network speed at a glance.",
+    description:
+      "MacMonitor is a lightweight system monitor that lives in the macOS menu bar. It shows CPU and RAM as a compact CPU% : RAM% readout, with live upload and download speed beside it, and opens a detailed panel with one click. It is a single native Swift binary with no dependencies and no Dock icon.",
+    date: "2026-04",
+    category: "daily",
+    status: "shipped",
+    role: "Solo: design & build",
+    stack: ["Swift", "SwiftUI", "AppKit"],
+    links: [{ label: "GitHub", href: "https://github.com/Harsh-gupta-07/MacMonitor" }],
+    metrics: [
+      { value: "1s", label: "refresh for network speed" },
+      { value: "0", label: "dependencies" },
+      { value: "macOS 13+", label: "Ventura or later" },
+    ],
+    usage: "Lives in my menu bar all day, so CPU, RAM and network are one glance away instead of one Activity Monitor window away.",
+    cover: {
+      src: "/projects/MacMonitor/ui-expanded.png",
+      alt: "MacMonitor panel open under the menu bar, showing CPU 1.8%, RAM 6.3 + 1.7 GB of 8 GB and network speed",
+      width: 822,
+      height: 660,
+      fit: "contain",
+    },
+    gallery: [
+      {
+        src: "/projects/MacMonitor/ui-menubar.png",
+        alt: "macOS menu bar with the MacMonitor readout: CPU 7%, RAM 85%, download and upload 0K",
+        width: 760,
+        height: 80,
+        caption: "The menu bar readout",
+      },
+      {
+        src: "/projects/MacMonitor/github.png",
+        alt: "MacMonitor GitHub repository: Makefile, MenuBarWidgetApp.swift and README",
+        width: 2516,
+        height: 726,
+        caption: "Repository: one Swift file and a Makefile",
+      },
+    ],
+  },
   {
     slug: "wchr",
     title: "wchr",

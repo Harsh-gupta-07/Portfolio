@@ -33,7 +33,22 @@ export function ProjectVisual({
   if (project.diagram) {
     const { Component } = diagrams[project.diagram];
     visual = <Component />;
-  } else if (project.cover)
+  } else if (project.cover?.fit === "contain")
+    visual = (
+      <div className="flex h-full w-full items-center justify-center bg-ink p-6 md:p-10">
+        <Image
+          src={project.cover.src}
+          alt={project.cover.alt}
+          width={project.cover.width}
+          height={project.cover.height}
+          sizes="(min-width: 768px) 560px, 90vw"
+          priority={priority}
+          // Definite width: with w-auto the srcset density would shrink a small source to a third of its size.
+          className={`h-auto max-h-full w-full max-w-[560px] object-contain ${className}`}
+        />
+      </div>
+    );
+  else if (project.cover)
     visual = (
       <Image
         src={project.cover.src}

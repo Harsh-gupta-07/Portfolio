@@ -1,0 +1,38 @@
+## What it shows
+
+- **CPU** load across all cores, read straight from the Mach kernel.
+- **RAM** calculated the way Activity Monitor does it: App Memory + Wired +
+  Compressed, so the number matches what macOS itself reports.
+- **Swap** next to physical RAM, for a full picture of memory pressure.
+- **Network speed**: the data actually sent and received each second, not
+  the connection's maximum bandwidth.
+
+Click the `CPU% : RAM%` readout to open the detailed panel; the ✕ in its
+corner quits the app.
+
+## Under the hood
+
+All of the logic lives in one file, `MenuBarWidgetApp.swift`, compiled with
+`swiftc` against SwiftUI and AppKit. No packages, no Dock icon, no helper
+services.
+
+| Reading | Source |
+|---|---|
+| CPU | `mach_host_self`, `host_processor_info` |
+| Memory | `host_statistics64` |
+| Total RAM, swap | `sysctlbyname` |
+
+## Launch at login
+
+MacMonitor can run as a `launchd` Launch Agent: `RunAtLoad` starts it at
+login, and `KeepAlive` with `SuccessfulExit = false` relaunches it only if it
+crashes, so quitting it with ✕ keeps it closed.
+
+## Build
+
+```bash
+make build        # compiles to ./bin/MacMonitor
+make run-detach   # keeps running after the terminal closes
+```
+
+Requires macOS 13 (Ventura) or later and the Xcode Command Line Tools.
