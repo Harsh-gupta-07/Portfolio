@@ -223,6 +223,10 @@ html.lenis body {
   html.js [data-split] {
     visibility: hidden;
   }
+  /* Terminal output prints in place rather than rising. */
+  html.js [data-reveal="line"] {
+    transform: none;
+  }
 }
 
 /* Card → project page morph (React <ViewTransition share="morph">) */

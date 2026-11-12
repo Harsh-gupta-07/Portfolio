@@ -2,6 +2,17 @@ import Image from "next/image";
 import { ViewTransition } from "react";
 import type { Project } from "@/content/projects";
 import { GoqueueDiagram } from "@/components/goqueue-diagram";
+import { WchrTerminal } from "@/components/wchr-terminal";
+
+const diagrams = {
+  goqueue: { Component: GoqueueDiagram, caption: "Architecture" },
+  wchr: { Component: WchrTerminal, caption: "A real session: save a file, wchr reruns cargo run" },
+} satisfies Record<NonNullable<Project["diagram"]>, unknown>;
+
+/** Caption for the project's cover in a <Figure>. */
+export function visualCaption(project: Project) {
+  return project.diagram ? diagrams[project.diagram].caption : project.cover?.alt;
+}
 
 /**
  * The project's cover (image or built-in diagram). Wrapped in a named
@@ -19,8 +30,10 @@ export function ProjectVisual({
   className?: string;
 }) {
   let visual: React.ReactNode = null;
-  if (project.diagram === "goqueue") visual = <GoqueueDiagram />;
-  else if (project.cover)
+  if (project.diagram) {
+    const { Component } = diagrams[project.diagram];
+    visual = <Component />;
+  } else if (project.cover)
     visual = (
       <Image
         src={project.cover.src}

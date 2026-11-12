@@ -1,0 +1,43 @@
+## The problem
+
+Every edit to a server or script means stopping it and starting it again by
+hand. `nodemon` fixes that for Node; wchr brings the same loop to any command
+in any language, with nothing to configure.
+
+## How it works
+
+```sh
+wchr "cargo run"
+```
+
+1. wchr starts the command and watches the current directory recursively.
+2. When a file changes, it stops the running process and starts the command
+   again.
+
+Three details keep that loop calm:
+
+- **Cross-platform file events** come from the
+  [`notify`](https://crates.io/crates/notify) crate, so it behaves the same on
+  macOS, Linux and Windows.
+- **Gitignore-aware.** Paths are filtered through the
+  [`ignore`](https://crates.io/crates/ignore) crate, so `target/`,
+  `node_modules` and other build output never cause a restart.
+- **Debounced.** Events are grouped in a 1-second window, so an editor that
+  writes several files at once triggers one rerun, not five.
+
+## Any command
+
+```sh
+wchr "node index.js"
+wchr "python main.py"
+wchr "cargo run"
+```
+
+## Install
+
+```sh
+brew install Harsh-Gupta-07/tap/wchr
+```
+
+Or build from source with `cargo install --path .`. Released under the MIT
+license.

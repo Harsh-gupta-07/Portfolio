@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense, type ComponentType } from "react";
-import { ProjectVisual } from "@/components/project-visual";
+import { ProjectVisual, visualCaption } from "@/components/project-visual";
 import { Figure, Status, Tag } from "@/components/ui";
 import { adjacentProjects, allProjects, formatDate, getProject } from "@/lib/projects";
 
@@ -126,7 +126,7 @@ async function ProjectContent({ params }: Pick<PageProps<"/projects/[slug]">, "p
       </header>
 
       <div className="shell mt-14 md:mt-20">
-        <Figure fig="01" caption={project.diagram ? "Architecture" : project.cover?.alt}>
+        <Figure fig="01" caption={visualCaption(project)}>
           <ProjectVisual project={project} sizes="(min-width: 1280px) 1184px, 100vw" priority />
         </Figure>
       </div>

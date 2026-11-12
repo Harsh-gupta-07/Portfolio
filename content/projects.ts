@@ -31,7 +31,7 @@ export type Project = {
   /** Headline numbers shown on the project page. */
   metrics?: { value: string; label: string }[];
   /** Built-in illustration used instead of a cover image. */
-  diagram?: "goqueue";
+  diagram?: "goqueue" | "wchr";
   cover?: { src: string; alt: string; width: number; height: number };
   gallery?: { src: string; alt: string; width: number; height: number; caption?: string }[];
   /** For "Projects I use myself": how it fits into daily life. */
@@ -39,6 +39,45 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    slug: "wchr",
+    title: "wchr",
+    summary: "A tiny, zero-config nodemon in Rust: watch a folder, rerun a command on every save.",
+    description:
+      "wchr (watcher) is a lightweight CLI that watches a project for file changes and reruns a command. When a file changes it kills the running process and starts it again. It reads your .gitignore, so build output and node_modules never trigger a restart, and it debounces bursts of saves into a single rerun.",
+    date: "2026-09",
+    category: "daily",
+    status: "shipped",
+    role: "Solo: design, build & release",
+    stack: ["Rust", "GitHub Actions"],
+    links: [
+      { label: "GitHub", href: "https://github.com/Harsh-gupta-07/wchr" },
+      { label: "Releases", href: "https://github.com/Harsh-gupta-07/wchr/releases" },
+    ],
+    metrics: [
+      { value: "v0.7.0", label: "latest release" },
+      { value: "1s", label: "debounce window" },
+      { value: "3", label: "platforms: macOS, Linux, Windows" },
+    ],
+    usage: "Runs in my terminal while I build my other Rust projects, rebuilding and restarting on every save.",
+    diagram: "wchr",
+    gallery: [
+      {
+        src: "/projects/wchr/wchr-terminal.png",
+        alt: "Terminal running wchr on the figs project: it reruns cargo run after src/lib.rs and Cargo.toml are saved",
+        width: 1654,
+        height: 676,
+        caption: "wchr restarting cargo run on each save",
+      },
+      {
+        src: "/projects/wchr/wchr-github.png",
+        alt: "wchr GitHub repository with src, workflows, Cargo files and the v0.7.0 release",
+        width: 2546,
+        height: 994,
+        caption: "Repository and releases",
+      },
+    ],
+  },
   {
     slug: "goqueue",
     title: "goQueue",
@@ -110,7 +149,7 @@ export const projects: Project[] = [
     description:
       "A three-tier e-commerce platform: a Next.js storefront, an Express API and a PostgreSQL database through Prisma. Customers search, filter and check out; admins manage products, orders and users from their own dashboard.",
     date: "2025-10",
-    category: "daily",
+    category: "other",
     status: "live",
     role: "Solo — frontend, API & data model",
     stack: ["Next.js", "React", "Tailwind CSS", "Node.js", "Express", "PostgreSQL", "Prisma"],

@@ -43,7 +43,7 @@ export function DailyDrivers() {
     <section id="daily" className="section border-t border-rule">
       <div className="shell">
         <SectionHeader index="06" label="Projects I use myself" title="Built it, then kept using it.">
-          Software I wrote that’s part of my own routine — the best test of whether something actually works.
+          Software I wrote that’s part of my own routine. The best test of whether something actually works.
         </SectionHeader>
 
         <div className="grid gap-10">
