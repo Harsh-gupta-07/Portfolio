@@ -6,9 +6,9 @@ import { formatDate } from "@/lib/projects";
 
 export function ProjectCard({
   project,
-  fig,
+  fig, 
   size = "md",
-}: {
+}:{
   project: Project;
   fig: string;
   size?: "md" | "lg";
@@ -18,7 +18,7 @@ export function ProjectCard({
       href={`/projects/${project.slug}`}
       className="group flex h-full flex-col border border-rule bg-paper-raised transition-[border-color,box-shadow,translate] duration-300 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-ink hover:shadow-print"
     >
-      <div className={`overflow-hidden border-b border-rule ${size === "lg" ? "aspect-[16/9]" : "aspect-[16/10]"}`}>
+      <div className={`overflow-hidden border-b border-rule ${size === "lg" ? "aspect-video" : "aspect-16/10"}`}>
         <div className="h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]">
           <ProjectVisual
             project={project}
